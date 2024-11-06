@@ -1,20 +1,28 @@
 package util;
 
+import powers.Power;
+
+import java.util.List;
+
 public class Attack {
 
     private String name;
-    private int dmg;
+    private int dmgAmount;
 
-    public Attack(String name, int dmg) {
+    private List<Power> powerUsage;
+
+    public Attack(String name, int dmgAmount) {
         this.name = name;
-        this.dmg = dmg;
+        this.dmgAmount = dmgAmount;
     }
 
     public String getName() {
         return name;
     }
 
-    public int getDmg() {
-        return dmg;
+    public int getDmgAmount() {
+        return dmgAmount;
     }
+
+
 }

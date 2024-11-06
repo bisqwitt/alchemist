@@ -1,6 +1,6 @@
 package util;
 
-import element.*;
+import powers.*;
 
 import java.util.Random;
 
@@ -8,7 +8,7 @@ public class Util {
 
     private static Random random = new Random();
 
-    public static Element randomElement() {
+    public static Power randomPower() {
         int r = random.nextInt(4);
         return switch (r) {
             case 0 -> new Fire();

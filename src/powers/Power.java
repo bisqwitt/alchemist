@@ -1,10 +1,10 @@
-package element;
+package powers;
 
-public abstract class Element {
+public abstract class Power {
 
     private String symbol;
 
-    public Element(String symbol) {
+    public Power(String symbol) {
         this.symbol = symbol;
     }
 

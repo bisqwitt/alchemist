@@ -15,8 +15,11 @@ public class UI {
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
     public static int selectCardFromList(List<Card> selection) {
-        selection.forEach(card -> write(card.getName() + " (" + selection.indexOf(card) + ") "));
-        write(": ");
+        if(selection.size() == 1) {
+            return 0;
+        }
+        selection.forEach(card -> write("| " + card.getName() + " (" + selection.indexOf(card) + ") "));
+        write("| : ");
 
         String input = readln();
         if(Util.isInteger(input) && Integer.parseInt(input) < selection.size() && Integer.parseInt(input) >= 0) { //TODO UGLY
@@ -34,12 +37,12 @@ public class UI {
         return selectCardFromList(selection);
     }
 
-    //0: end turn, 1: place card, 2: place element
+    //0: end turn, 1: place card, 2: place element, 3: attack
     public static int selectTurnAction() {
-        UI.write("Place element (2) | Place card (1) | End turn (0) : ");
+        UI.write("Switch place (4) | Attack (3) | Place power (2) | Place card (1) | End turn (0) : ");
         String input = readln();
 
-        if(Util.isInteger(input) && Arrays.asList(0,1,2,4).contains(Integer.parseInt(input))) {
+        if(Util.isInteger(input) && Arrays.asList(0,1,2,3,4).contains(Integer.parseInt(input))) {
             return Integer.parseInt(input);
         }
         writeln("Invalid input");
@@ -52,17 +55,25 @@ public class UI {
     }
 
     public static void writeln(String text) {
-        System.out.println(text);
+        write(text);
+        System.out.println();
     }
 
     public static void write(String text) {
-        System.out.print(text);
+        try {
+            for(int i = 0; i < text.length(); i++) {
+                System.out.print(text.charAt(i));
+                Thread.sleep(20);
+            }
+        } catch(InterruptedException e) {
+            System.out.println(e);
+        }
     }
 
     public static void visualizeHand(Player player) {
         write("Hand: ");
         visualizeCards(player.getHand(), false);
-        writeln("\t\t\t\t\tNext elements: " + (player.getNextElements().first() != null ? player.getNextElements().first().getName() : "_") + " / " + player.getNextElements().second().getName());
+        writeln("\t\t\t\t\tnow / next powers: " + (player.getNextElements().first() != null ? player.getNextElements().first().getName() : "_") + " / " + player.getNextElements().second().getName());
     }
 
     public static void visualizeBoard(Pair<Player> players) {
@@ -82,9 +93,9 @@ public class UI {
     private static void visualizeCards(List<Card> cards, boolean showElements) {
         cards.forEach(card -> {
             write("[" + card.getName());
-            if(showElements && !card.getElements().isEmpty()) {
+            if(showElements && !card.getPowerOrbs().isEmpty()) {
                 write(" | ");
-                card.getElements().forEach(element -> write(element.getSymbol()));
+                card.getPowerOrbs().forEach(element -> write(element.getSymbol()));
             }
             write("]");
         });

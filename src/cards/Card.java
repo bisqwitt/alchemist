@@ -1,9 +1,12 @@
 package cards;
 
-import element.Element;
+import planets.PlanetType;
+import powers.Power;
 import planets.Planet;
 import util.Ability;
 import util.Attack;
+import util.Pair;
+import util.UI;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,23 +17,46 @@ public abstract class Card {
     private Planet planet;
 
     private int maxHp;
-    private int currentHp = 0;
+    private int currentHp;
 
     private Attack attack;
     private Ability ability;
 
-    private ArrayList<Element> elements;
+    private ArrayList<Power> powerOrbs;
 
     protected Card(Planet planet, int maxHp, Attack attack, Ability ability) {
         this.planet = planet;
         this.maxHp = maxHp;
+        this.currentHp = maxHp;
         this.attack = attack;
         this.ability = ability;
-        elements = new ArrayList<>();
+        powerOrbs = new ArrayList<>();
     }
 
-    public void takeDamage(int damage) {
-        currentHp -= damage;
+    public void attack(Card target) {
+        if(powerOrbs.isEmpty()) {
+            UI.writeln("Fail: No power orb");
+            return;
+        }
+        powerOrbs.removeFirst();
+
+        int trueDmg = attack.getDmgAmount();
+        if(planet.getRelations().contains(target.getPlanet().getType())) {
+            if(planet.getRelations().indexOf(target.getPlanet().getType()) >= 2) {
+                trueDmg -= 20;
+                UI.writeln(getName() + " is weaker against " + target.getName() + "! (-20)");
+            } else {
+                trueDmg += 20;
+                UI.writeln(getName() + " is stronger against " + target.getName() + "! (+20)");
+            }
+        }
+
+        UI.writeln(getName() + " " + currentHp + "hp" + " attacks " + target.getName() + " " + target.currentHp + "hp (-" + trueDmg + ")");
+        target.takeHit(trueDmg);
+    }
+
+    private void takeHit(int attackDmg) {
+        this.currentHp -= attackDmg;
     }
 
     public int getMaxHp() {
@@ -57,12 +83,12 @@ public abstract class Card {
         return getClass().getSimpleName() + " " + getPlanet().getType().getSymbol();
     }
 
-    public void addElement(Element element) {
-        elements.add(element);
+    public void addPowerOrb(Power powerOrb) {
+        powerOrbs.add(powerOrb);
     }
 
-    public ArrayList<Element> getElements() {
-        return elements;
+    public ArrayList<Power> getPowerOrbs() {
+        return powerOrbs;
     }
 
     public static List<Card> createDeck() {

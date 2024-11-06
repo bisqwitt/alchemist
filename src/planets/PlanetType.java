@@ -1,19 +1,19 @@
 package planets;
 
 public enum PlanetType {
-    SUN("Gold"),
-    MOON("Silver"),
-    MERCURY("Quicksilver"),
-    VENUS("Copper"),
-    MARS("Iron"),
-    JUPITER("Tin"),
-    SATURN("Lead");
+    SUN("☉"),
+    MOON("☽"),
+    MERCURY("☿"),
+    VENUS("♀"),
+    MARS("♂"),
+    JUPITER("♃"),
+    SATURN("♄");
 
-    private String element;
+    private String symbol;
 
-    PlanetType(String element) {
-        this.element = element;
+    PlanetType(String symbol) {
+        this.symbol = symbol;
     }
 
-    public String getElement() {return element;}
+    public String getSymbol() {return symbol;}
 }

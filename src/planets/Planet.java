@@ -16,7 +16,7 @@ public abstract class Planet {
     }
 
     public String getName() {
-        return getClass().getSimpleName() + " (" + this.getType().getElement() + ")";
+        return getClass().getSimpleName() + " (" + this.getType().getSymbol() + ")";
     }
 
     public PlanetType getType() {

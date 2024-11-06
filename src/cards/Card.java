@@ -1,10 +1,12 @@
 package cards;
 
+import element.Element;
 import planets.Planet;
 import util.Ability;
 import util.Attack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Card {
@@ -17,11 +19,14 @@ public abstract class Card {
     private Attack attack;
     private Ability ability;
 
+    private ArrayList<Element> elements;
+
     protected Card(Planet planet, int maxHp, Attack attack, Ability ability) {
         this.planet = planet;
         this.maxHp = maxHp;
         this.attack = attack;
         this.ability = ability;
+        elements = new ArrayList<>();
     }
 
     public void takeDamage(int damage) {
@@ -44,15 +49,31 @@ public abstract class Card {
         return ability;
     }
 
-    public static ArrayList<Card> createDeck() {
-        ArrayList<Card> cards = new ArrayList<>();
-        cards.add(new Apollo());
-        cards.add(new Aphrodite());
-        cards.add(new Ares());
-        cards.add(new Artemis());
-        cards.add(new Cronus());
-        cards.add(new Hermes());
-        cards.add(new Zeus());
-        return cards;
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public String getName() {
+        return getClass().getSimpleName() + " " + getPlanet().getType().getSymbol();
+    }
+
+    public void addElement(Element element) {
+        elements.add(element);
+    }
+
+    public ArrayList<Element> getElements() {
+        return elements;
+    }
+
+    public static List<Card> createDeck() {
+        return Arrays.asList(
+                new Apollo(),
+                new Aphrodite(),
+                new Ares(),
+                new Artemis(),
+                new Cronus(),
+                new Hermes(),
+                new Zeus()
+        );
     }
 }

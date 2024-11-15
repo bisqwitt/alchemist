@@ -1,0 +1,16 @@
+Alchemist (Inspiriert von Pokemon)
+
+Board besteht aus:
+- Einer aktiven Karte pro Seite: Die Karte welche angreifen kann / angegriffen wird.
+- 0 - 3 Tisch Karten pro Seite: Karten welche in die aktive Position gewechselt werden können.
+- Einer Hand pro Seite: Karten welche man auf den Tisch platzieren kann. (Jede Runde wird eine Karte vom Deck auf die Hand gezogen)
+- Aktueller / nächster Power-Orb pro Seite. Der aktuelle Power-Orb kann jede Runde auf eine Karte platziert werden.
+
+Karten / Power-Orbs:
+- Jede Karte hat einen Power-typ. Sie kann nur Power-Orbs erhalten welche diesem Typ entsprechen.
+- Karten können nur Angreifen wenn Sie ein PowerOrb haben. Jeder Angriff kostet ein Power-Orb.
+- Jede spezifische Karte ist stärker / schwächer als zwei spezifische Karten.
+
+Aphridite:
+- Power-Typ: Luft 
+- Stärker als: Hermes, 

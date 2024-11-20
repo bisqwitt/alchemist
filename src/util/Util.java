@@ -1,20 +1,22 @@
 package util;
 
-import powers.*;
+import cards.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class Util {
 
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
-    public static Power randomPower() {
+    public static PowerType randomPower() {
         int r = random.nextInt(4);
         return switch (r) {
-            case 0 -> new Fire();
-            case 1 -> new Water();
-            case 2 -> new Air();
-            case 3 -> new Earth();
+            case 0 -> PowerType.Fire;
+            case 1 -> PowerType.Water;
+            case 2 -> PowerType.Air;
+            case 3 -> PowerType.Earth;
             default -> null;
         };
     }
@@ -26,6 +28,18 @@ public class Util {
             return false;
         }
         return true;
+    }
+
+    public static List<Card> createDeck() {
+        return Arrays.asList(
+                new Gold(),
+                new Copper(),
+                new Iron(),
+                new Silver(),
+                new Lead(),
+                new Quicksilver(),
+                new Tin()
+        );
     }
 
 }

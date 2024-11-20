@@ -1,7 +1,8 @@
-package util;
+package gameboard;
 
 import cards.Card;
-import gameboard.Player;
+import util.Pair;
+import util.Util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -93,9 +94,11 @@ public class UI {
     private static void visualizeCards(List<Card> cards, boolean showElements) {
         cards.forEach(card -> {
             write("[" + card.getName());
-            if(showElements && !card.getPowerOrbs().isEmpty()) {
+            if(showElements && card.getPowerOrbAmount() != 0) {
                 write(" | ");
-                card.getPowerOrbs().forEach(element -> write(element.getSymbol()));
+                for(int i = 0; i < card.getPowerOrbAmount(); i++) {
+                    write(card.getPowerType().getSymbol() + "");
+                }
             }
             write("]");
         });

@@ -1,8 +1,6 @@
 package gameboard;
 
 import util.Pair;
-import util.UI;
-import util.Util;
 
 public class Board {
 
@@ -51,7 +49,7 @@ public class Board {
                 case 1: tableChanged = player.placeCard(); break;
                 case 2: tableChanged = player.placeElement(); break;
                 case 3: player.getActiveCard().attack(enemy.getActiveCard()); return;
-                case 4: tableChanged = player.switchActiveCard(UI.selectCardFromList(player.getTable())); break;
+                case 4: player.switchActiveCard(UI.selectCardFromList(player.getTable())); return;
             }
             if (tableChanged) {
                 UI.visualizeBoard(players);

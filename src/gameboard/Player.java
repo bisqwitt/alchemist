@@ -1,17 +1,16 @@
 package gameboard;
 
 import cards.Card;
-import powers.Power;
+import cards.PowerType;
 import util.Pair;
 import util.Util;
-import util.UI;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Player {
 
-    private String name;
+    private final String name;
 
     private int points;
     private ArrayList<Card> deck;
@@ -20,7 +19,7 @@ public class Player {
     private ArrayList<Card> table;
     private ArrayList<Card> hand;
 
-    private Pair<Power> nextElements;
+    private Pair<PowerType> nextElements;
 
     public Player(String name) {
         this.name = name;
@@ -29,7 +28,7 @@ public class Player {
 
     public void init() {
         points = 0;
-        deck = new ArrayList<>(Card.createDeck());
+        deck = new ArrayList<>(Util.createDeck());
         Collections.shuffle(deck);
 
         activeCard = null;
@@ -39,12 +38,12 @@ public class Player {
 
     public void drawCards(int amount) {
         if(deck.isEmpty()) {
-            deck = new ArrayList<>(Card.createDeck());
+            deck = new ArrayList<>(Util.createDeck());
         }
         for (int i = 0; i < amount; i++) {
             Card card = deck.removeFirst();
             hand.add(card);
-            UI.writeln(name + " draws: " + card.getName() + " - " + card.getPlanet().getPowerType().getSymbol());
+            UI.writeln(name + " draws: " + card.getName() + " - " + card.getPowerType().getSymbol());
         }
     }
 
@@ -57,11 +56,14 @@ public class Player {
         return true;
     }
 
-    public boolean switchActiveCard(int cardIndex) {
+    public void switchActiveCard(int cardIndex) {
+        if(table.get(cardIndex) == null) {
+            UI.writeln("Selected Card on Table doesn't exist");
+            return;
+        }
         Card card = activeCard;
         table.add(card);
         activeCard = table.remove(cardIndex);
-        return true;
     }
 
     public boolean placeElement() {
@@ -72,19 +74,19 @@ public class Player {
         int response = UI.selectCardFromList(activeCard, table);
         Card target = response == 0 ? activeCard : table.get(response -1);
 
-        if(!target.getPlanet().getPowerType().getSymbol().equals(nextElements.first().getSymbol())) {
-            UI.writeln("Fail: Power type doesn't match " + target.getName() + " - " + target.getPlanet().getPowerType().getSymbol());
+        if(target.getPowerType() != nextElements.first()) {
+            UI.writeln("Fail: Power type doesn't match " + target.getName() + " - " + target.getPowerType().getSymbol());
             return false;
         }
 
-        target.addPowerOrb(nextElements.first());
+        target.addPowerOrb();
         nextElements = new Pair<>(null, nextElements.second());
         return true;
     }
 
     public void cycleElements() {
-        Power e1 = nextElements == null ? Util.randomPower() : nextElements.second();
-        Power e2 = Util.randomPower();
+        PowerType e1 = nextElements == null ? Util.randomPower() : nextElements.second();
+        PowerType e2 = Util.randomPower();
         nextElements = new Pair<>(e1, e2);
     }
 
@@ -121,7 +123,7 @@ public class Player {
         return activeCard;
     }
 
-    public Pair<Power> getNextElements() {
+    public Pair<PowerType> getNextElements() {
         return nextElements;
     }
 }

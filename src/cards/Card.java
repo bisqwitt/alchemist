@@ -1,48 +1,51 @@
 package cards;
 
-import planets.PlanetType;
-import powers.Power;
-import planets.Planet;
 import util.Ability;
 import util.Attack;
 import util.Pair;
-import util.UI;
+import gameboard.UI;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public abstract class Card {
 
-    private Planet planet;
+    private final PowerType powerType;
+    private final Pair<Class<? extends Card>> strongAgainst;
+    private final Pair<Class<? extends Card>> weakAgainst;
 
-    private int maxHp;
+    private char symbol;
+    private final int maxHp;
     private int currentHp;
 
-    private Attack attack;
-    private Ability ability;
+    private final Attack attack;
+    private final Ability ability;
 
-    private ArrayList<Power> powerOrbs;
+    private int powerOrbAmount;
 
-    protected Card(Planet planet, int maxHp, Attack attack, Ability ability) {
-        this.planet = planet;
+    protected Card(PowerType powerType,
+                   Pair<Class<? extends Card>> strongAgainst,
+                   Pair<Class<? extends Card>> weakAgainst,
+                   char symbol, int maxHp, Attack attack, Ability ability) {
+        this.powerType = powerType;
+        this.strongAgainst = strongAgainst;
+        this.weakAgainst = weakAgainst;
         this.maxHp = maxHp;
         this.currentHp = maxHp;
         this.attack = attack;
         this.ability = ability;
-        powerOrbs = new ArrayList<>();
+        powerOrbAmount = 0;
     }
 
     public void attack(Card target) {
-        if(powerOrbs.isEmpty()) {
+        if(powerOrbAmount == 0) {
             UI.writeln("Fail: No power orb");
             return;
         }
-        powerOrbs.removeFirst();
+        powerOrbAmount--;
 
         int trueDmg = attack.getDmgAmount();
-        if(planet.getRelations().contains(target.getPlanet().getType())) {
-            if(planet.getRelations().indexOf(target.getPlanet().getType()) >= 2) {
+        if(getRelations().contains(target.getClass())) {
+            if(getRelations().indexOf(target.getClass()) >= 2) {
                 trueDmg -= 20;
                 UI.writeln(getName() + " is weaker against " + target.getName() + "! (-20)");
             } else {
@@ -75,31 +78,26 @@ public abstract class Card {
         return ability;
     }
 
-    public Planet getPlanet() {
-        return planet;
-    }
-
     public String getName() {
-        return getClass().getSimpleName() + " " + getPlanet().getType().getSymbol();
+        return getClass().getSimpleName() + " " + symbol;
     }
 
-    public void addPowerOrb(Power powerOrb) {
-        powerOrbs.add(powerOrb);
+    public void addPowerOrb() {
+        powerOrbAmount++;
     }
 
-    public ArrayList<Power> getPowerOrbs() {
-        return powerOrbs;
+    public int getPowerOrbAmount() {
+        return powerOrbAmount;
     }
 
-    public static List<Card> createDeck() {
-        return Arrays.asList(
-                new Apollo(),
-                new Aphrodite(),
-                new Ares(),
-                new Artemis(),
-                new Cronus(),
-                new Hermes(),
-                new Zeus()
-        );
+    public PowerType getPowerType() {
+        return powerType;
+    }
+
+    public ArrayList<Class<? extends Card>> getRelations() {
+        ArrayList<Class<? extends Card>> list = new ArrayList<>();
+        strongAgainst.both().forEach(list::add);
+        weakAgainst.both().forEach(list::add);
+        return list;
     }
 }

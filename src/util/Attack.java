@@ -1,15 +1,9 @@
 package util;
 
-import powers.Power;
-
-import java.util.List;
-
 public class Attack {
 
-    private String name;
-    private int dmgAmount;
-
-    private List<Power> powerUsage;
+    private final String name;
+    private final int dmgAmount;
 
     public Attack(String name, int dmgAmount) {
         this.name = name;

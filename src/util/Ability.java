@@ -2,8 +2,8 @@ package util;
 
 public class Ability {
 
-    private int percentage;
-    private String description;
+    private final int percentage;
+    private final String description;
 
     public Ability(int percentage, String description) {
         this.percentage = percentage;
